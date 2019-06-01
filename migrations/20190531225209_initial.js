@@ -10,6 +10,8 @@ exports.up = function(knex, Promise) {
 
     tbl.string('description', 128).notNullable();
 
+    tbl.timestamps(true,true);
+
     tbl.boolean("completed").defaultTo(false);
   });
 };

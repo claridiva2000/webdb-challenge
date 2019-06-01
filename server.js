@@ -11,6 +11,9 @@ const helmet = require('helmet');
 //   useNullAsDefault: true, // needed for sqlite
 // };
 
+//database
+// const db = knex(knexConfig);
+
 //router imports
 const projectRouter =require('./routes/project-router');
 const actionRouter =require('./routes/action-router');
@@ -20,16 +23,13 @@ const server = express();
 
 //express
 server.use(express.json());
+//middleware
+server.use(helmet());
 
 //routers
 server.use('/api/projects', projectRouter);
 server.use('/api/actions', actionRouter);
 
-//middleware
-server.use(helmet());
-
-//database
-// const db = knex(knexConfig);
 
 //main
 server.get('/', (req, res) => {

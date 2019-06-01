@@ -1,33 +1,38 @@
-const express = require('express');
+const router = require('express').Router();
 
-const Projects = require('../data/helpers/projectModel');
-// const Actions = require('./actionModel');
+const knex = require('knex');
 
-const router = express.Router();
-
-router.use((req, res, next) => {
-  console.log('Project Router Working!');
-  next();
-});
-
-//get projects
-router.get('/', async (req, res) => {
-  try {
-    const allprojects = await Projects.get();
-    res.status(200).json({message: allprojects});
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      message: 'Error retrieving Projects'
-    });
+const knexConfig = {
+  client: 'sqlite3',
+  useNullAsDefault: true,
+  connection: {
+    filename: './data/sprint.db3'
   }
+};
+
+const db = knex(knexConfig);
+
+// router.use((req, res, next) => {
+//   console.log('Actions Router Working');
+//   next();
+// });
+
+//get all actions
+router.get('/', (req, res) => {
+  db('projects')
+    .then(projects => {
+      res.status(200).json(projects);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 });
 
-//add new project
+//add actions
 router.post('/', async (req, res) => {
   try {
-    const project = await Projects.insert(req.body);
-    res.status(201).json({message:project});
+    const postaction = await db.insert(req.body);
+    res.status(201).json({ message: postaction });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -35,3 +40,23 @@ router.post('/', async (req, res) => {
     });
   }
 });
+
+//get by id
+router.get('/project/:id', (req, res) => {
+  const { id } = req.params;
+      db('projects')
+         .where({ id: id })
+         .first()
+         .then(projects => {
+             db('actions')
+               .where({ project_id: id }).then(actions => {
+              (projects.actions = actions);
+                return res.status(200).json(projects);
+              });
+         })
+          .catch(err => {
+              res.status(500).json({ Error: "can't get project" })
+          });
+});
+
+module.exports = router;
