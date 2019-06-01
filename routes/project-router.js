@@ -31,8 +31,8 @@ router.get('/', (req, res) => {
 //add actions
 router.post('/', async (req, res) => {
   try {
-    const postaction = await db.insert(req.body);
-    res.status(201).json({ message: postaction });
+    const project = await db('projects').insert(req.body);
+    res.status(201).json({ message: "Posted!" });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -44,19 +44,20 @@ router.post('/', async (req, res) => {
 //get by id
 router.get('/project/:id', (req, res) => {
   const { id } = req.params;
-      db('projects')
-         .where({ id: id })
-         .first()
-         .then(projects => {
-             db('actions')
-               .where({ project_id: id }).then(actions => {
-              (projects.actions = actions);
-                return res.status(200).json(projects);
-              });
-         })
-          .catch(err => {
-              res.status(500).json({ Error: "can't get project" })
-          });
+  db('projects')
+    .where({ id: id })
+    .first()
+    .then(projects => {
+      db('actions')
+        .where({ project_id: id })
+        .then(actions => {
+          projects.actions = actions;
+          return res.status(200).json(projects);
+        });
+    })
+    .catch(err => {
+      res.status(500).json({ Error: "can't get project" });
+    });
 });
 
 module.exports = router;
