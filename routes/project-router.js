@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const project = await db('projects').insert(req.body);
-    res.status(201).json({ message: "Posted!" });
+    res.status(201).json({ message: 'Posted!' });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -42,21 +42,21 @@ router.post('/', async (req, res) => {
 });
 
 //get by id
-router.get('/project/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const { id } = req.params;
   db('projects')
     .where({ id: id })
     .first()
     .then(projects => {
       db('actions')
-        .where({ project_id: id })
+        .where({ projectId: id })
         .then(actions => {
           projects.actions = actions;
           return res.status(200).json(projects);
         });
     })
     .catch(err => {
-      res.status(500).json({ Error: "can't get project" });
+      res.status(500).json({ Error: 'There was an error getting that' });
     });
 });
 
