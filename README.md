@@ -33,9 +33,13 @@ This will be akin to the Web API that you built in the last sprint, only this ti
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 1. Explain the difference between `RDBMS` and `SQL`.
+RDBMS uses a relational model of data, as the name suggests. ... So: the RDBMS is the system, and SQL is the language used to interact with the system
 1. Why do tables need a `primary key`?
+ "PRIMARY KEY constraints identify the column or set of columns that have values that uniquely identify a row in a table. No two rows in a table can have the same primary key value.
 1. What is the name given to a table column that references the primary key on another table.
+Foreign Key
 1. What do we need in order to have a _many to many_ relationship between two tables.
+a third table with two primary keys referencing the one-to-many relationships of the other two tables. 
 
 ## Project Set Up
 
@@ -73,12 +77,12 @@ Feel free to name the tables and fields anything you want. **Add relationships**
 
 ### Tasks
 
-- [ ] Build the database and tables using knex migrations. **Seeding is not needed**.
-- [ ] Build the API with the following endpoints:
+- [x] Build the database and tables using knex migrations. **Seeding is not needed**.
+- [x] Build the API with the following endpoints:
 
-  - [ ] POST for adding projects.
-  - [ ] POST for adding actions.
-  - [ ] GET for retrieving a `project` by its `id` that returns an object with the following structure:
+  - [x] POST for adding projects.
+  - [x] POST for adding actions.
+  - [x] GET for retrieving a `project` by its `id` that returns an object with the following structure:
 
     ```js
     {
